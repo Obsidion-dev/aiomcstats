@@ -1,5 +1,6 @@
 import struct
 import asyncio
+from typing import Any
 
 
 class Connection:
@@ -32,13 +33,13 @@ class Connection:
         self.sent = ""
         return result
 
-    def _unpack(self, format, data):
+    def _unpack(self, format, data) -> Any:
         return struct.unpack(">" + format, bytes(data))[0]
 
-    def _pack(self, format, data):
+    def _pack(self, format, data) -> bytes:
         return struct.pack(">" + format, data)
 
-    def read_varint(self):
+    def read_varint(self) -> int:
         result = 0
         for i in range(5):
             part = ord(self.read(1))
@@ -57,11 +58,11 @@ class Connection:
             remaining >>= 7
         raise ValueError("The value %d is too big to send in a varint" % value)
 
-    def read_utf(self):
+    def read_utf(self) -> bytearray:
         length = self.read_varint()
         return self.read(length).decode("utf8")
 
-    def write_utf(self, value):
+    def write_utf(self, value) -> None:
         self.write_varint(len(value))
         self.write(bytearray(value, "utf8"))
 
@@ -71,44 +72,44 @@ class Connection:
             result.extend(self.read(1))
         return result[:-1].decode("ISO-8859-1")
 
-    def write_ascii(self, value):
+    def write_ascii(self, value) -> None:
         self.write(bytearray(value, "ISO-8859-1"))
         self.write(bytearray.fromhex("00"))
 
-    def read_short(self):
+    def read_short(self) -> Any:
         return self._unpack("h", self.read(2))
 
-    def write_short(self, value):
+    def write_short(self, value) -> None:
         self.write(self._pack("h", value))
 
-    def read_ushort(self):
+    def read_ushort(self) -> Any:
         return self._unpack("H", self.read(2))
 
-    def write_ushort(self, value):
+    def write_ushort(self, value) -> None:
         self.write(self._pack("H", value))
 
-    def read_int(self):
+    def read_int(self) -> Any:
         return self._unpack("i", self.read(4))
 
-    def write_int(self, value):
+    def write_int(self, value) -> None:
         self.write(self._pack("i", value))
 
-    def read_uint(self):
+    def read_uint(self) -> Any:
         return self._unpack("I", self.read(4))
 
-    def write_uint(self, value):
+    def write_uint(self, value) -> None:
         self.write(self._pack("I", value))
 
-    def read_long(self):
+    def read_long(self) -> Any:
         return self._unpack("q", self.read(8))
 
-    def write_long(self, value):
+    def write_long(self, value) -> None:
         self.write(self._pack("q", value))
 
-    def read_ulong(self):
+    def read_ulong(self) -> Any:
         return self._unpack("Q", self.read(8))
 
-    def write_ulong(self, value):
+    def write_ulong(self, value) -> None:
         self.write(self._pack("Q", value))
 
     def read_buffer(self):
@@ -117,7 +118,7 @@ class Connection:
         result.receive(self.read(length))
         return result
 
-    def write_buffer(self, buffer):
+    def write_buffer(self, buffer) -> None:
         data = buffer.flush()
         self.write_varint(len(data))
         self.write(data)
@@ -162,25 +163,25 @@ class TCPConnection(Connection):
             result.extend(await self.read(1))
         return result[:-1].decode("ISO-8859-1")
 
-    async def read_short(self):
+    async def read_short(self) -> Any:
         return self._unpack("h", await self.read(2))
 
-    async def read_ushort(self):
+    async def read_ushort(self) -> Any:
         return self._unpack("H", await self.read(2))
 
-    async def read_int(self):
+    async def read_int(self) -> Any:
         return self._unpack("i", await self.read(4))
 
-    async def read_uint(self):
+    async def read_uint(self) -> Any:
         return self._unpack("I", await self.read(4))
 
-    async def read_long(self):
+    async def read_long(self) -> Any:
         return self._unpack("q", await self.read(8))
 
-    async def read_ulong(self):
+    async def read_ulong(self) -> Any:
         return self._unpack("Q", await self.read(8))
 
-    async def read_buffer(self):
+    async def read_buffer(self) -> Connection:
         length = await self.read_varint()
         result = Connection()
         result.receive(await self.read(length))

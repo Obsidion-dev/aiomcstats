@@ -10,7 +10,7 @@ class ServerPinger:
         self,
         connection: Connection,
         host: str = "",
-        port: int = 0,
+        port: int = 25565,
         version: int = 47,
         ping_token: int = None,
     ) -> None:

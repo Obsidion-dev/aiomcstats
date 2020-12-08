@@ -8,21 +8,45 @@ from aiomcstats.pinger import ServerPinger
 from aiomcstats.models.status import Status, OfflineStatus, Debug
 
 
-async def ping(host: str, port: Optional[int] = None, tries: Optional[int] = 3) -> int:
+async def ping(
+    host: str, port: Optional[int] = None, tries: Optional[int] = 3
+) -> Union[int, OfflineStatus]:
+    """Ping minecraft server.
+
+    Args:
+        host (str): minecraft server address
+        port (Optional[int], optional): port to query server otherwise
+            it is found. Defaults to None.
+        tries (Optional[int], optional): The amount of tries to get
+            data from server. Defaults to 3.
+
+    Returns:
+        Union[int, OfflineStatus]: ping time or info.
+    """
     hostname, port, ip, srv = await get_raw(host, port)
     connection = TCPConnection()
     await connection.connect(ip, port)
-    exception = None
     for _attempt in range(tries):
         try:
             pinger = ServerPinger(connection, host=hostname, port=port)
             pinger.handshake()
             await pinger.read_status()
             return await pinger.test_ping()
-        except Exception as e:
-            exception = e
+        except BaseException:
+            pass
     else:
-        raise exception
+        debug = Debug(
+            ping=True,
+            query=False,
+            srv=srv,
+        )
+        return OfflineStatus(
+            online=False,
+            ip=ip,
+            port=port,
+            debug=debug,
+            hostname=hostname,
+        )
 
 
 async def status(
