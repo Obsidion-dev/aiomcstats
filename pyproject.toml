@@ -1,0 +1,43 @@
+[tool.poetry]
+authors = ["Leon Bowie <leon@bowie-co.nz>"]
+description = "Asyncpixel"
+documentation = "https://aiomcstats.readthedocs.io"
+homepage = "https://github.com/Obsidion-dev/aiomcstats"
+license = "GPLv3"
+name = "aiomcstats"
+readme = "README"
+repository = "https://github.com/Obsidion-dev/aiomcstats"
+version = "1.0.0"
+
+[tool.poetry.dependencies]
+python = "^3.7"
+dnspython = "^2.0.0"
+pydantic = "^1.7.3"
+
+[tool.poetry.dev-dependencies]
+black = "^20.8b1"
+darglint = "^1.5.5"
+flake8 = "^3.8.4"
+flake8-bandit = "^2.1.2"
+flake8-bugbear = "^20.1.4"
+flake8-docstrings = "^1.5.0"
+pep8-naming = "^0.11.1"
+reorder-python-imports = "^2.3.6"
+pre-commit = "^2.8.2"
+pre-commit-hooks = "^3.3.0"
+safety = "^1.9.0"
+mypy = "^0.790"
+pytest = "^6.1.2"
+coverage = {extras = ["toml"], version = "^5.3"}
+typeguard = "^2.10.0"
+Pygments = "^2.7.2"
+Sphinx = "^3.3.1"
+sphinx-rtd-theme = "^0.5.0"
+sphinx-autobuild = "^2020.9.1"
+
+[tool.poetry.urls]
+Changelog = "https://github.com/Obsidion-dev/aiomcstats/releases"
+
+[build-system]
+build-backend = "poetry.core.masonry.api"
+requires = ["poetry>=1.1.0"]
