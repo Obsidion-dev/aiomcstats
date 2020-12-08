@@ -58,11 +58,11 @@ class Status(BaseModel):
     info: Optional[Info]
 
 
-class OfflineStatus:
+class OfflineStatus(BaseModel):
     """Offline status class."""
 
     online: bool
     ip: str
     port: int
     debug: Debug
-    hostname: Optional[str] = None
+    hostname: Optional[str]
