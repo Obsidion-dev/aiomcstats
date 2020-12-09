@@ -13,7 +13,6 @@ version = "1.0.0"
 dnspython = "^2.0.0"
 pydantic = "^1.7.3"
 python = "^3.7"
-craftpainting = "^0.0.3"
 
 [tool.poetry.dev-dependencies]
 Pygments = "^2.7.2"

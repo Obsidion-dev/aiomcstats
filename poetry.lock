@@ -158,14 +158,6 @@ toml = {version = "*", optional = true, markers = "extra == \"toml\""}
 toml = ["toml"]
 
 [[package]]
-name = "craftpainting"
-version = "0.0.3"
-description = "Create Minecraft-like paintings"
-category = "main"
-optional = false
-python-versions = "*"
-
-[[package]]
 name = "darglint"
 version = "1.5.8"
 description = "A utility for ensuring Google-style docstrings stay up to date with the source code."
@@ -977,7 +969,7 @@ testing = ["pytest (>=3.5,<3.7.3 || >3.7.3)", "pytest-checkdocs (>=1.2.3)", "pyt
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "7172ef08c012a35dd5340bbfb1d8eed8c3648ef2e5384a4a4a38dfca85fdc604"
+content-hash = "eff39ce7ed0b32edc36d21d8c904c51d193250aa89e2d1844aec7e00a7662e66"
 
 [metadata.files]
 alabaster = [
@@ -1070,10 +1062,6 @@ coverage = [
     {file = "coverage-5.3-cp39-cp39-win32.whl", hash = "sha256:cb7df71de0af56000115eafd000b867d1261f786b5eebd88a0ca6360cccfaca7"},
     {file = "coverage-5.3-cp39-cp39-win_amd64.whl", hash = "sha256:47a11bdbd8ada9b7ee628596f9d97fbd3851bd9999d398e9436bd67376dbece7"},
     {file = "coverage-5.3.tar.gz", hash = "sha256:280baa8ec489c4f542f8940f9c4c2181f0306a8ee1a54eceba071a449fb870a0"},
-]
-craftpainting = [
-    {file = "craftpainting-0.0.3-py3-none-any.whl", hash = "sha256:e7a5eeff615874b19030a4cd22c2590264787f40afadea5e0f4081b1f23665d0"},
-    {file = "craftpainting-0.0.3.tar.gz", hash = "sha256:fef9294427a42aec9c997ad8d8125edc70ec42357874cf3190b3586d90c1c97b"},
 ]
 darglint = [
     {file = "darglint-1.5.8-py3-none-any.whl", hash = "sha256:2e1012945a09d19a15cc87f9d15e7b14c18473ec9cf7769c641951b348de1353"},
