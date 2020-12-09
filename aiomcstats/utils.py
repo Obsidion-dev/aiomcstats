@@ -1,12 +1,17 @@
 """Useful utils for different protocols."""
-
-from urllib.parse import urlparse
-from ipaddress import ip_address
 import re
+from ipaddress import ip_address
+from typing import Any
+from typing import Dict
 from typing import Tuple
+from urllib.parse import urlparse
+
 import dns.asyncresolver
-import dns
-from aiomcstats.models.status import Status, Mods, Info, Players, Debug
+from aiomcstats.models.status import Debug
+from aiomcstats.models.status import Info
+from aiomcstats.models.status import Mods
+from aiomcstats.models.status import Players
+from aiomcstats.models.status import Status
 
 
 async def get_raw(host: str, port: int = None) -> Tuple[str, int, str, bool]:
@@ -124,7 +129,21 @@ def ansi_to_html(text: str) -> str:
     return COLOR_REGEX.sub(single_sub, text)
 
 
-def create_status(raw, ip: str, port: int, hostname: str, srv: bool) -> Status:
+def create_status(
+    raw: Dict[str, Any], ip: str, port: int, hostname: str, srv: bool
+) -> Status:
+    """Create status object from json.
+
+    Args:
+        raw (Dict[str, Any]): raw json
+        ip (str): ip of server
+        port (int): port of server
+        hostname (str): hostname of server
+        srv (bool): wether srv used
+
+    Returns:
+        Status: Status object
+    """
     icon = raw["favicon"] if "favicon" in raw else None
     software = raw["software"] if "software" in raw else None
     protocol = raw["version"]["protocol"]

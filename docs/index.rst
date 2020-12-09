@@ -10,6 +10,8 @@ Welcome to aiomcstats's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   reference
+
 
 
 Indices and tables

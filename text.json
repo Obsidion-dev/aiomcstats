@@ -1,42 +1,42 @@
 {
-    "version": {
-        "name": "Bungeecord 1.7.x-1.15.x",
-        "protocol": 47
-    },
-    "players": {
-        "max": 1024,
-        "online": 51
-    },
-    "description": {
-        "extra": [
-            {
-                "color": "gold",
-                "bold": true,
-                "text": "MineYourMind "
-            },
-            {
-                "color": "dark_gray",
-                "text": "» "
-            },
-            {
-                "color": "white",
-                "text": "Lobby\n"
-            },
-            {
-                "color": "dark_gray",
-                "text": "Version "
-            },
-            {
-                "color": "gray",
-                "text": "1.7.10-1.14.4"
-            }
-        ],
-        "text": ""
-    },
-    "favicon": "data:image/png;base64,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",
-    "modinfo": {
-        "type": "VANILLA",
-        "modList": []
-    },
-    "latency": 279.509
+  "version": {
+    "name": "Bungeecord 1.7.x-1.15.x",
+    "protocol": 47
+  },
+  "players": {
+    "max": 1024,
+    "online": 51
+  },
+  "description": {
+    "extra": [
+      {
+        "color": "gold",
+        "bold": true,
+        "text": "MineYourMind "
+      },
+      {
+        "color": "dark_gray",
+        "text": "» "
+      },
+      {
+        "color": "white",
+        "text": "Lobby\n"
+      },
+      {
+        "color": "dark_gray",
+        "text": "Version "
+      },
+      {
+        "color": "gray",
+        "text": "1.7.10-1.14.4"
+      }
+    ],
+    "text": ""
+  },
+  "favicon": "data:image/png;base64,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",
+  "modinfo": {
+    "type": "VANILLA",
+    "modList": []
+  },
+  "latency": 279.509
 }

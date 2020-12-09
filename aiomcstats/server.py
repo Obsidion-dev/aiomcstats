@@ -1,3 +1,5 @@
+"""Main packet logic."""
+
 import datetime
 import json
 import random
@@ -5,15 +7,26 @@ from typing import Dict, Any
 from aiomcstats.connection import Connection
 
 
-class ServerPinger:
+class Server:
+    """Server info class"""
+
     def __init__(
         self,
         connection: Connection,
-        host: str = "",
+        host: str = "127.0.0.1",
         port: int = 25565,
         version: int = 47,
         ping_token: int = None,
     ) -> None:
+        """Minecraft server info.
+
+        Args:
+            connection (Connection): Connection to use
+            host (str, optional): host address. Defaults to "".
+            port (int, optional): minecraft server port. Defaults to 25565.
+            version (int, optional): version. Defaults to 47.
+            ping_token (int, optional): token to ping with. Defaults to None.
+        """
         if ping_token is None:
             ping_token = random.randint(0, (1 << 63) - 1)
         self.version = version
@@ -23,16 +36,25 @@ class ServerPinger:
         self.ping_token = ping_token
 
     def handshake(self) -> None:
+        """Handshake with server."""
         packet = Connection()
         packet.write_varint(0)
         packet.write_varint(self.version)
         packet.write_utf(self.host)
         packet.write_ushort(self.port)
-        packet.write_varint(1)  # Intention to query status
-
+        packet.write_varint(1)
         self.connection.write_buffer(packet)
 
-    async def read_status(self) -> Dict[str, Any]:
+    async def status(self) -> Dict[str, Any]:
+        """Get status info of minecraft server.
+
+        Raises:
+            IOError: Received invalid status response packet.
+            IOError: Received invalid JSON
+
+        Returns:
+            Dict[str, Any]: raw json response
+        """
         request = Connection()
         request.write_varint(0)  # Request status
         self.connection.write_buffer(request)
@@ -44,12 +66,18 @@ class ServerPinger:
             raw = json.loads(response.read_utf())
         except ValueError:
             raise IOError("Received invalid JSON")
-        try:
-            return raw
-        except ValueError as e:
-            raise IOError("Received invalid status response: %s" % e)
+        return raw
 
-    async def test_ping(self) -> int:
+    async def ping(self) -> int:
+        """Ping minecraft server.
+
+        Raises:
+            IOError: Received invalid ping response packet.
+            IOError: Received mangled ping response packet.
+
+        Returns:
+            int: ping of connection.
+        """
         request = Connection()
         request.write_varint(1)  # Test ping
         request.write_long(self.ping_token)

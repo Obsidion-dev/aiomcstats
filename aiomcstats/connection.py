@@ -1,6 +1,6 @@
-import struct
 import asyncio
-from typing import Any
+import struct
+from typing import Any, Union
 
 
 class Connection:
@@ -13,14 +13,14 @@ class Connection:
         self.received = self.received[length:]
         return result
 
-    def write(self, data: bytearray) -> None:
+    def write(self, data: str) -> None:
         if isinstance(data, Connection):
             data = bytearray(data.flush())
-        if isinstance(data, str):
+        elif isinstance(data, str):
             data = bytearray(data)
         self.sent.extend(data)
 
-    def receive(self, data: bytearray) -> None:
+    def receive(self, data) -> None:
         if not isinstance(data, bytearray):
             data = bytearray(data)
         self.received.extend(data)
@@ -30,10 +30,10 @@ class Connection:
 
     def flush(self) -> bytearray:
         result = self.sent
-        self.sent = ""
+        self.sent = None
         return result
 
-    def _unpack(self, format, data) -> Any:
+    def _unpack(self, format: str, data: bytearray) -> Any:
         return struct.unpack(">" + format, bytes(data))[0]
 
     def _pack(self, format, data) -> bytes:

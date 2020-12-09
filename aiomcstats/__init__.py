@@ -1,1 +1,2 @@
-from .main import ping, status
+from .main import ping
+from .main import status

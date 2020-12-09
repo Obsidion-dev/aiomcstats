@@ -1,11 +1,14 @@
 """Main Functions."""
+from typing import Optional
+from typing import Union
 
-from typing import Optional, Union
-
-from aiomcstats.utils import get_raw, create_status
 from aiomcstats.connection import TCPConnection
-from aiomcstats.pinger import ServerPinger
-from aiomcstats.models.status import Status, OfflineStatus, Debug
+from aiomcstats.models.status import Debug
+from aiomcstats.models.status import OfflineStatus
+from aiomcstats.models.status import Status
+from aiomcstats.server import Server
+from aiomcstats.utils import create_status
+from aiomcstats.utils import get_raw
 
 
 async def ping(
@@ -26,14 +29,14 @@ async def ping(
     hostname, port, ip, srv = await get_raw(host, port)
     connection = TCPConnection()
     await connection.connect(ip, port)
+    exception = None
     for _attempt in range(tries):
         try:
-            pinger = ServerPinger(connection, host=hostname, port=port)
+            pinger = Server(connection, host=hostname, port=port)
             pinger.handshake()
-            await pinger.read_status()
-            return await pinger.test_ping()
-        except BaseException:
-            pass
+            return await pinger.ping()
+        except Exception as e:
+            exception = str(e)
     else:
         debug = Debug(
             ping=True,
@@ -46,6 +49,7 @@ async def ping(
             port=port,
             debug=debug,
             hostname=hostname,
+            error=exception,
         )
 
 
@@ -67,16 +71,17 @@ async def status(
     hostname, port, ip, srv = await get_raw(host, port)
     connection = TCPConnection()
     await connection.connect(ip, port)
+    exception = None
     for _attempt in range(tries):
         try:
-            pinger = ServerPinger(connection, host=hostname, port=port)
+            pinger = Server(connection, host=hostname, port=port)
             pinger.handshake()
-            result = await pinger.read_status()
-            result["latency"] = await pinger.test_ping()
+            result = await pinger.status()
+            result["latency"] = await pinger.ping()
             data = create_status(result, ip, port, hostname, srv)
             return data
-        except BaseException:
-            pass
+        except Exception as e:
+            exception = str(e)
     else:
         debug = Debug(
             ping=True,
@@ -89,4 +94,5 @@ async def status(
             port=port,
             debug=debug,
             hostname=hostname,
+            error=exception,
         )
