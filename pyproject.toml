@@ -34,7 +34,7 @@ safety = "^1.10.3"
 sphinx-autobuild = "^2020.9.1"
 sphinx-rtd-theme = "^0.5.1"
 sphinxcontrib-napoleon = "^0.7"
-typeguard = "^2.10.0"
+typeguard = "^2.11.1"
 
 [tool.poetry.urls]
 Changelog = "https://github.com/Obsidion-dev/aiomcstats/releases"
