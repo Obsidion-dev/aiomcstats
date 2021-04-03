@@ -13,6 +13,7 @@ version = "1.0.0"
 dnspython = "^2.1.0"
 pydantic = "^1.7.3"
 python = "^3.7"
+asyncio-dgram = "^1.2.0"
 
 [tool.poetry.dev-dependencies]
 Pygments = "^2.7.4"

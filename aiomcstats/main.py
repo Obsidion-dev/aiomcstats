@@ -9,6 +9,7 @@ from aiomcstats.models.status import Status
 from aiomcstats.server import Server
 from aiomcstats.utils import create_status
 from aiomcstats.utils import get_raw
+from .bedrock import BedrockServerStatus
 
 
 async def ping(
@@ -72,7 +73,7 @@ async def status(
     connection = TCPConnection()
     await connection.connect(ip, port)
     exception = None
-    for _attempt in range(tries):
+    for _ in range(tries):
         try:
             pinger = Server(connection, host=hostname, port=port)
             pinger.handshake()
@@ -96,3 +97,25 @@ async def status(
             hostname=hostname,
             error=exception,
         )
+
+async def bedrock(host: str, port: Optional[int] = None, tries: Optional[int] = 3):
+        """Asynchronously checks the status of a Minecraft Bedrock Edition server.
+        :param int tries: How many times to retry if it fails.
+        :param type **kwargs: Passed to a `BedrockServerStatus` instance.
+        :return: Status information in a `BedrockStatusResponse` instance.
+        :rtype: BedrockStatusResponse
+        """
+
+        exception = None
+        hostname, port, ip, srv = await get_raw(host, port)
+        port = 19132
+        for _ in range(tries):
+            try:
+                resp = await BedrockServerStatus(ip, port).read_status_async()
+                break
+            except BaseException as e:
+                exception = e
+
+        if exception:
+            raise exception
+        return resp
