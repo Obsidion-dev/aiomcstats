@@ -1,13 +1,9 @@
 Reference
 =========
 
-.. contents::
-    :local:
-    :backlinks: none
 
+Client
+-------------------
 
-aiomcstats
---------------------------
-
-.. automodule:: aiomcstats
+.. autoclass:: aiomcstats
    :members:

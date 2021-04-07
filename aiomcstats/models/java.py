@@ -1,9 +1,6 @@
-from typing import Dict
-from typing import List
-from typing import Optional
-from uuid import UUID
-
+from typing import Dict, List, Optional
 from pydantic import BaseModel
+from uuid import UUID
 
 
 class Debug(BaseModel):
@@ -59,7 +56,6 @@ class Status(BaseModel):
     plugins: Optional[Mods]
     mods: Optional[Plugins]
     info: Optional[Info]
-
 
 class OfflineStatus(BaseModel):
     """Offline status class."""

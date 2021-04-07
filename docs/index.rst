@@ -1,22 +1,49 @@
-.. aiomcstats documentation master file, created by
-   sphinx-quickstart on Wed Nov 18 16:30:38 2020.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
 Welcome to aiomcstats's documentation!
 ======================================
+
+Aiomcstats is an asyncronous python wrapper for the Hypixel api with 100% coverage.
+
+Requirements
+------------
+
+- Python 3.8+
+- Pydantic
+- Aiohttp
+
+Installation
+------------
+
+To install Aiomcstats,
+run this command in your terminal or use your favourite package manager:
+
+.. code-block:: console
+
+   $ pip install aiomcstats
+
+Basic Example
+-------------
+
+.. code-block:: python
+
+   import aiomcstats
+   import asyncio
+
+   async def main():
+      hypixel = aiomcstats.Hypixel("hypixel_api_key")
+      profile = await hypixel.profile("405dcf08b80f4e23b97d943ad93d14fd")
+      print(profile)
+      await hypixel.close()
+
+
+   asyncio.run(main())
+
+.. _Contributor Guide: contributing.html
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
    reference
-
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+   contributing
+   codeofconduct
+   license

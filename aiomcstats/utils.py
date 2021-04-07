@@ -1,20 +1,13 @@
 """Useful utils for different protocols."""
-import re
-from ipaddress import ip_address
-from typing import Any
-from typing import Dict
+from aiomcstats.models.java import Debug, Info, Mods, Players, Status
+from typing import Any, Dict, Optional
 from typing import Tuple
-from urllib.parse import urlparse
+import re
 
 import dns.asyncresolver
-from aiomcstats.models.status import Debug
-from aiomcstats.models.status import Info
-from aiomcstats.models.status import Mods
-from aiomcstats.models.status import Players
-from aiomcstats.models.status import Status
 
 
-async def get_raw(host: str, port: int = None) -> Tuple[str, int, str, bool]:
+async def get_raw(host: str, port: Optional[int] = None) -> Tuple[str, int, str, bool]:
     """Get raw info on port
 
     Args:
@@ -51,39 +44,6 @@ async def get_raw(host: str, port: int = None) -> Tuple[str, int, str, bool]:
     ip = (await dns.asyncresolver.resolve(host, "A", search=True))[0].address
 
     return (host, port, ip, srv)
-
-
-def ip_type(address: str) -> int:
-    """Determine wether ipv4 or ipv6
-
-    Args:
-        address (str): ip address
-
-    Returns:
-        Union[int]: type of ip
-    """
-    try:
-        return ip_address(address).version
-    except ValueError:
-        return None
-
-
-def parse_address(address: str) -> Tuple[str, int]:
-    """Parse string url to get host and port.
-
-    Args:
-        address (str): web address
-
-    Raises:
-        ValueError: If invalid address
-
-    Returns:
-        Tuple[str, int]: hostname and port
-    """
-    tmp = urlparse("//" + address)
-    if not tmp.hostname:
-        raise ValueError("Invalid address '%s'" % address)
-    return (tmp.hostname, tmp.port)
 
 
 COLOR_DICT = {
@@ -157,19 +117,19 @@ def create_status(
     if "text" in raw["description"]:
         motd = Info(
             raw=[raw["description"]["text"]],
-            clean=[re.sub(r"(§.)", "", raw["description"]["text"])],
+            clean=[a.strip() for a in re.sub(r"(§.)", "", raw["description"]["text"]).split("\n")],
             html=[ansi_to_html(raw["description"]["text"])],
         )
     elif "extra" in raw["description"]:
         motd = Info(
-            raw=[raw["description"]["text"]],
-            clean=["".join(element["text"] for element in raw["description"])],
-            html=[ansi_to_html(raw["description"]["text"])],
+            raw=[raw["description"]["extra"]],
+            clean=["".join(element["extra"] for element in raw["description"])],
+            html=[ansi_to_html(raw["description"]["extra"])],
         )
     elif type(raw["description"]) == str:
         motd = Info(
             raw=[raw["description"]],
-            clean=[re.sub(r"(§.)", "", raw["description"])],
+            clean=[a.strip() for a in re.sub(r"(§.)", "", raw["description"]).split("\n")],
             html=[ansi_to_html(raw["description"])],
         )
 

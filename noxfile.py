@@ -5,8 +5,8 @@ from pathlib import Path
 from textwrap import dedent
 
 import nox
-import nox_poetry.patch
-from nox.sessions import Session
+from nox_poetry import Session
+from nox_poetry import session
 
 
 package = "aiomcstats"
@@ -23,8 +23,10 @@ nox.options.sessions = (
 
 def activate_virtualenv_in_precommit_hooks(session: Session) -> None:
     """Activate virtualenv in hooks installed by pre-commit.
+
     Args:
         session: The Session object.
+
     This function patches git hooks installed by pre-commit to activate the
     session's virtual environment. This allows pre-commit to locate hooks in
     that environment when invoked from git.
@@ -70,7 +72,7 @@ def activate_virtualenv_in_precommit_hooks(session: Session) -> None:
         hook.write_text("\n".join(lines))
 
 
-@nox.session(name="pre-commit", python="3.8")
+@session(name="pre-commit", python="3.9")
 def precommit(session: Session) -> None:
     """Lint using pre-commit."""
     args = session.posargs or ["run", "--all-files", "--show-diff-on-failure"]
@@ -81,6 +83,9 @@ def precommit(session: Session) -> None:
         "flake8-bandit",
         "flake8-bugbear",
         "flake8-docstrings",
+        "flake8-black",
+        "flake8-annotations",
+        "flake8-import-order",
         "pep8-naming",
         "pre-commit",
         "pre-commit-hooks",
@@ -91,15 +96,21 @@ def precommit(session: Session) -> None:
         activate_virtualenv_in_precommit_hooks(session)
 
 
-@nox.session(python="3.9")
+@session(python="3.9")
 def safety(session: Session) -> None:
     """Scan dependencies for insecure packages."""
-    requirements = nox_poetry.export_requirements(session)
+    requirements = session.poetry.export_requirements()
     session.install("safety")
-    session.run("safety", "check", f"--file={requirements}", "--bare")
+    # Ignore some issues in some dev dependencies
+    session.run(
+        "safety",
+        "check",
+        f"--file={requirements}",
+        "--bare",
+    )
 
 
-@nox.session(python=python_versions)
+@session(python=python_versions)
 def mypy(session: Session) -> None:
     """Type-check using mypy."""
     args = session.posargs or ["aiomcstats", "tests", "docs/conf.py"]
@@ -110,11 +121,13 @@ def mypy(session: Session) -> None:
         session.run("mypy", f"--python-executable={sys.executable}", "noxfile.py")
 
 
-@nox.session(python=python_versions)
+@session(python=python_versions)
 def tests(session: Session) -> None:
     """Run the test suite."""
     session.install(".")
-    session.install("coverage[toml]", "pytest", "pygments")
+    session.install(
+        "coverage[toml]", "pytest", "pygments", "aioresponses", "pytest-asyncio"
+    )
     try:
         session.run("coverage", "run", "--parallel", "-m", "pytest", *session.posargs)
     finally:
@@ -122,11 +135,12 @@ def tests(session: Session) -> None:
             session.notify("coverage")
 
 
-@nox.session
+@session
 def coverage(session: Session) -> None:
     """Produce the coverage report."""
     # Do not use session.posargs unless this is the only session.
-    has_args = session.posargs and len(session._runner.manifest) == 1
+    nsessions = len(session._runner.manifest)  # type: ignore[attr-defined]
+    has_args = session.posargs and nsessions == 1
     args = session.posargs if has_args else ["report"]
 
     session.install("coverage[toml]")
@@ -137,15 +151,15 @@ def coverage(session: Session) -> None:
     session.run("coverage", *args)
 
 
-@nox.session(python=python_versions)
+@session(python=python_versions)
 def typeguard(session: Session) -> None:
     """Runtime type checking using Typeguard."""
     session.install(".")
-    session.install("pytest", "typeguard", "pygments")
+    session.install("pytest", "typeguard", "pygments", "aioresponses", "pytest-asyncio")
     session.run("pytest", f"--typeguard-packages={package}", *session.posargs)
 
 
-@nox.session(name="docs-build", python="3.8")
+@session(name="docs-build", python="3.9")
 def docs_build(session: Session) -> None:
     """Build the documentation."""
     args = session.posargs or ["docs", "docs/_build"]
@@ -153,6 +167,8 @@ def docs_build(session: Session) -> None:
     session.install(
         "sphinx",
         "sphinx-rtd-theme",
+        "recommonmark",
+        "sphinx_autodoc_typehints",
     )
 
     build_dir = Path("docs", "_build")
@@ -162,7 +178,7 @@ def docs_build(session: Session) -> None:
     session.run("sphinx-build", *args)
 
 
-@nox.session(python="3.8")
+@session(python="3.9")
 def docs(session: Session) -> None:
     """Build and serve the documentation with live reloading on file changes."""
     args = session.posargs or ["--open-browser", "docs", "docs/_build"]
@@ -171,6 +187,8 @@ def docs(session: Session) -> None:
         "sphinx",
         "sphinx-autobuild",
         "sphinx-rtd-theme",
+        "recommonmark",
+        "sphinx_autodoc_typehints",
     )
 
     build_dir = Path("docs", "_build")
