@@ -7,7 +7,7 @@ license = "GPLv3"
 name = "aiomcstats"
 readme = "README"
 repository = "https://github.com/Obsidion-dev/aiomcstats"
-version = "1.0.0"
+version = "0.1.1"
 
 [tool.poetry.dependencies]
 dnspython = "^2.1.0"

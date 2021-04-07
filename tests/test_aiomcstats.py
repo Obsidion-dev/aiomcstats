@@ -5,7 +5,7 @@ import pytest
 
 def test_version() -> None:
     """Mock version."""
-    assert aiomcstats.__version__ == "1.0.0"
+    assert aiomcstats.__version__ == "0.1.1"
 
 
 def test_author() -> None:
