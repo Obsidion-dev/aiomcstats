@@ -3,11 +3,11 @@ authors = ["Leon Bowie <leon@bowie-co.nz>"]
 description = "Asyncpixel"
 documentation = "https://aiomcstats.readthedocs.io"
 homepage = "https://github.com/Obsidion-dev/aiomcstats"
-license = "GPLv3"
+license = "GPL-3.0-or-later"
 name = "aiomcstats"
 readme = "README.md"
 repository = "https://github.com/Obsidion-dev/aiomcstats"
-version = "0.1.1"
+version = "0.1.2"
 
 [tool.poetry.dependencies]
 dnspython = "^2.1.0"
