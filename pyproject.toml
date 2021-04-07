@@ -5,7 +5,7 @@ documentation = "https://aiomcstats.readthedocs.io"
 homepage = "https://github.com/Obsidion-dev/aiomcstats"
 license = "GPLv3"
 name = "aiomcstats"
-readme = "README.d"
+readme = "README.md"
 repository = "https://github.com/Obsidion-dev/aiomcstats"
 version = "0.1.1"
 
