@@ -22,8 +22,24 @@ async def status(
     Returns:
         Union[Status, OfflineStatus]: Online or Offline status object.
     """
-    hostname, port, ip, srv = await get_raw(host, port)
     exception = ""
+    try:
+        hostname, port, ip, srv = await get_raw(host, port)
+    except Exception as e:
+        exception = str(e)
+        debug = Debug(
+        ping=False,
+        query=False,
+        srv=False,
+        )
+        return OfflineStatus(
+            online=False,
+            ip=host,
+            port=port,
+            debug=debug,
+            hostname=host,
+            error=exception,
+        )
     for _ in range(tries):
         try:
             pinger = Ping(hostname, port)

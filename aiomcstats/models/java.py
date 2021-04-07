@@ -127,14 +127,17 @@ class OfflineStatus(BaseModel):
     """Info model
 
     Args:
-        raw (List[str]): Raw info with minecraft formatting.
-        clean (List[str]): Cleaned info without minecraft formatting.
-        html (List[str]): Html info with html formatting.
+        online: bool
+        ip: str
+        port: int
+        debug: Debug
+        hostname: Optional[str]
+        error: str
     """
 
     online: bool
-    ip: str
-    port: int
+    ip: Optional[str]
+    port: Optional[int]
     debug: Debug
     hostname: Optional[str]
     error: str
