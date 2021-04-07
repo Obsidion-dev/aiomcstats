@@ -29,10 +29,8 @@ Basic Example
    import asyncio
 
    async def main():
-      hypixel = aiomcstats.Hypixel("hypixel_api_key")
-      profile = await hypixel.profile("405dcf08b80f4e23b97d943ad93d14fd")
-      print(profile)
-      await hypixel.close()
+      data = aiomcstats.status("hypixel.net")
+      print(data)
 
 
    asyncio.run(main())
@@ -43,6 +41,7 @@ Basic Example
    :maxdepth: 2
    :caption: Contents:
 
+   index
    reference
    contributing
    codeofconduct

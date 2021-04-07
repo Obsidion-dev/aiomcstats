@@ -1,7 +1,6 @@
-
 from aiomcstats.models.bedrock import BedrockOffline, BedrockStatus
-# from aiomcstats.bedrock import bedrock_status
-from aiomcstats.server import Ping
+
+from aiomcstats.ping import Ping
 from aiomcstats.utils import create_status, get_raw
 from aiomcstats.models.java import Debug, OfflineStatus, Status
 from typing import Optional, Union
@@ -24,12 +23,13 @@ async def status(
         Union[Status, OfflineStatus]: Online or Offline status object.
     """
     hostname, port, ip, srv = await get_raw(host, port)
+    exception = ""
     for _ in range(tries):
         try:
             pinger = Ping(hostname, port)
             await pinger.connect()
             await pinger.handshake()
-            result =  await pinger.status()
+            result = await pinger.status()
             data = create_status(result, ip, port, hostname, srv)
             return data
         except Exception as e:
@@ -65,7 +65,7 @@ async def bedrock(
         Union[BedrockStatus, BedrockOffline]: Online or Offline status object.
     """
 
-    exception = None
+    exception = ""
     hostname, _, ip, _ = await get_raw(host, port)
     for _ in range(tries):
         try:
@@ -74,8 +74,8 @@ async def bedrock(
             exception = str(e)
     return BedrockOffline(
         online=False,
-        ip=host,
+        ip=ip,
         port=port,
-        hostname=host,
+        hostname=hostname,
         error=exception,
     )

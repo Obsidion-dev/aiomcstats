@@ -1,5 +1,5 @@
 """Useful utils for different protocols."""
-from aiomcstats.models.java import Debug, Info, Mods, Players, Status
+from aiomcstats.models.java import Debug, Info, Mods, Motd, Players, Status
 from typing import Any, Dict, Optional
 from typing import Tuple
 import re
@@ -115,21 +115,26 @@ def create_status(
         srv=srv,
     )
     if "text" in raw["description"]:
-        motd = Info(
+        motd = Motd(
             raw=[raw["description"]["text"]],
-            clean=[a.strip() for a in re.sub(r"(§.)", "", raw["description"]["text"]).split("\n")],
+            clean=[
+                a.strip()
+                for a in re.sub(r"(§.)", "", raw["description"]["text"]).split("\n")
+            ],
             html=[ansi_to_html(raw["description"]["text"])],
         )
     elif "extra" in raw["description"]:
-        motd = Info(
+        motd = Motd(
             raw=[raw["description"]["extra"]],
             clean=["".join(element["extra"] for element in raw["description"])],
             html=[ansi_to_html(raw["description"]["extra"])],
         )
     elif type(raw["description"]) == str:
-        motd = Info(
+        motd = Motd(
             raw=[raw["description"]],
-            clean=[a.strip() for a in re.sub(r"(§.)", "", raw["description"]).split("\n")],
+            clean=[
+                a.strip() for a in re.sub(r"(§.)", "", raw["description"]).split("\n")
+            ],
             html=[ansi_to_html(raw["description"])],
         )
 

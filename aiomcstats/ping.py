@@ -7,12 +7,12 @@ from aiomcstats.connection import TCPConnection
 from aiomcstats.connection import Connection
 
 
-class Ping():
+class Ping:
     def __init__(self, host: str, port: int) -> None:
         self.host = host
         self.port = port
 
-    async def connect(self):
+    async def connect(self) -> None:
         self.connection = TCPConnection()
         await self.connection.connect(self.host, self.port)
 
@@ -37,9 +37,8 @@ class Ping():
         if response.read_varint() != 0:
             raise IOError("Received invalid status response packet.")
         try:
-            raw = json.loads(response.read_utf())
+            raw: Dict[str, Any] = json.loads(response.read_utf())
         except ValueError:
             raise IOError("Received invalid JSON")
         raw["latency"] = received - sent
         return raw
-

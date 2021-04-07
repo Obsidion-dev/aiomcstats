@@ -5,7 +5,8 @@ from .models.bedrock import BedrockStatus
 import asyncio
 
 
-request_status_data = b'\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\xff\xff\x00\xfe\xfe\xfe\xfe\xfd\xfd\xfd\xfd\x124Vx'
+request_status_data = b"\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\xff\xff\x00\xfe\xfe\xfe\xfe\xfd\xfd\xfd\xfd\x124Vx"
+
 
 def parse_response(data: bytes, latency: int) -> BedrockStatus:
     """Parse response
@@ -23,15 +24,15 @@ def parse_response(data: bytes, latency: int) -> BedrockStatus:
     print(len(data))
     if len(data) == 7:
         return BedrockStatus(
-        edition=data[0],
-        motd=data[1],
-        protocol_version=data[2],
-        protocol_name=data[3],
-        player_count=data[4],
-        player_max=data[5],
-        server_id=data[6],
-        latency=latency,
-    )
+            edition=data[0],
+            motd=data[1],
+            protocol_version=data[2],
+            protocol_name=data[3],
+            player_count=data[4],
+            player_max=data[5],
+            server_id=data[6],
+            latency=latency,
+        )
     return BedrockStatus(
         edition=data[0],
         motd=data[1],
@@ -47,6 +48,7 @@ def parse_response(data: bytes, latency: int) -> BedrockStatus:
         port_ipv4=data[10],
         port_ipv6=data[11],
     )
+
 
 async def bedrock_status(host: str, port: int) -> BedrockStatus:
     """Get status of bedrock server
