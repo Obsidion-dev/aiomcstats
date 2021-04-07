@@ -16,10 +16,7 @@ An asyncronous minecraft server stats library
 # You should have received a copy of the GNU General Public License a
 # long with this program. If not, see <https://www.gnu.org/licenses/>.
 
-try:
-    from importlib.metadata import version, PackageNotFoundError  # type: ignore
-except ImportError:  # pragma: no cover
-    from importlib_metadata import version, PackageNotFoundError  # type: ignore
+from importlib.metadata import version, PackageNotFoundError  # type: ignore
 
 from .main import status
 from .main import bedrock
