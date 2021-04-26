@@ -680,7 +680,7 @@ python-versions = "*"
 
 [[package]]
 name = "reorder-python-imports"
-version = "2.4.0"
+version = "2.5.0"
 description = "Tool for reordering python imports"
 category = "dev"
 optional = false
@@ -1010,7 +1010,7 @@ testing = ["coverage (>=4)", "coverage-enable-subprocess (>=1)", "flaky (>=3)", 
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "e9877d0f34ac3be2d52c31313eb1017b9fc97769a14fe4023df53db70d2e6eb2"
+content-hash = "1a18f872b3c4b07e10946fb2adb2f31e3c6267cb4202c336fc3c50c1d5713e07"
 
 [metadata.files]
 alabaster = [
@@ -1030,6 +1030,7 @@ argcomplete = [
     {file = "aspy.refactor_imports-2.2.0.tar.gz", hash = "sha256:78ca24122963fd258ebfc4a8dc708d23a18040ee39dca8767675821e84e9ea0a"},
 ]
 asyncio-dgram = [
+    {file = "asyncio-dgram-1.2.0.tar.gz", hash = "sha256:c5464927f3ebc9a32aa6bbb3676fc1d645ae8bc9b4597feac8ab527b6fc33f38"},
     {file = "asyncio_dgram-1.2.0-py3-none-any.whl", hash = "sha256:d969f2c033542dbddab2fd8c0add51b62c3e01b686a21f84b8d3011cdfd4ce89"},
 ]
 atomicwrites = [
@@ -1468,8 +1469,8 @@ regex = [
     {file = "regex-2021.3.17.tar.gz", hash = "sha256:4b8a1fb724904139149a43e172850f35aa6ea97fb0545244dc0b805e0154ed68"},
 ]
 reorder-python-imports = [
-    {file = "reorder_python_imports-2.4.0-py2.py3-none-any.whl", hash = "sha256:995a2a93684af31837f30cf2bcddce2e7eb17f0d2d69c9905da103baf8cec42b"},
-    {file = "reorder_python_imports-2.4.0.tar.gz", hash = "sha256:9a9e7774d66e9b410b619f934e8206a63dce5be26bd894f5006eb764bba6a26d"},
+    {file = "reorder_python_imports-2.5.0-py2.py3-none-any.whl", hash = "sha256:ea237fabc1812c33bd9549b55e7ab15f096cd46fea336b7b0a7b7a297cabcc06"},
+    {file = "reorder_python_imports-2.5.0.tar.gz", hash = "sha256:7b8bd21cacc78be5674cc7f9a3fbeb63404f810ec3cbdd6b10f87e2dbb62f7cf"},
 ]
 requests = [
     {file = "requests-2.25.1-py2.py3-none-any.whl", hash = "sha256:c210084e36a42ae6b9219e00e48287def368a26d03a048ddad7bfee44f75871e"},
